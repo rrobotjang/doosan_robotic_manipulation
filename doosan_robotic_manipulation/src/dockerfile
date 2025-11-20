@@ -1,0 +1,25 @@
+FROM ros:humble
+
+RUN apt update && apt install -y python3-pip ros-humble-cv-bridge
+RUN pip install ultralytics opencv-python-headless numpy
+
+WORKDIR /ros2_ws
+COPY src ./src
+RUN . /opt/ros/humble/setup.sh && colcon build
+
+CMD ["bash", "-c", "source /ros2_ws/install/setup.bash && ros2 launch doosan_bringup3 robot_bringup.launch.py"]
+FROM ros:humble
+
+RUN apt update && apt install -y \
+    python3-pip ros-humble-moveit \
+    ros-humble-cv-bridge \
+    ros-humble-camera-info-manager \
+    ros-humble-vision-msgs
+
+RUN pip install ultralytics opencv-python filterpy onnxruntime
+
+WORKDIR /ros2_ws
+COPY src ./src
+RUN . /opt/ros/humble/setup.sh && colcon build
+
+CMD ["bash", "-c", "source install/setup.bash && ros2 launch full_system bringup.launch.py"]
