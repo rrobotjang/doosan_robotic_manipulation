@@ -1,0 +1,20 @@
+version: '3'
+services:
+  robot_system:
+    build: .
+    network_mode: host
+    environment:
+      - DISPLAY=$DISPLAY
+    volumes:
+      - ./ros2_ws:/ros2_ws
+
+version: "3.8"
+services:
+  robot_system:
+    build: .
+    network_mode: host
+    volumes:
+      - ./ros2_ws:/ros2_ws
+    environment:
+      - DISPLAY=${DISPLAY}
+    privileged: true
